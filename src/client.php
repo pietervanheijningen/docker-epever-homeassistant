@@ -34,23 +34,24 @@ $loopCount = 1;
 
 echo "Epever Tracer Poller for Home Assistant.";
 
-while(true) {
+while (true) {
 
     // Re-create HA topics on first loop count.
-    if($loopCount == 1) registerTopics();
+    if ($loopCount == 1) registerTopics();
 
     // Poll tracer every time we loop....
     pollTracer();
 
     $loopCount++;
     // Reset loop counter every 10 times, so we can re-create the HA topics (if HA restarted etc)...
-    if($loopCount >= 10) $loopCount = 1;
+    if ($loopCount >= 10) $loopCount = 1;
 
     sleep($conf->get('pollingInterval')); // Polling interval defined in config.
 }
 
 
-function registerTopics() {
+function registerTopics()
+{
     global $conf;
     $tracerTopics = new PhpEpsolarTracer($conf);
 
@@ -107,7 +108,8 @@ function registerTopics() {
 }
 
 
-function pollTracer() {
+function pollTracer()
+{
     global $conf;
     $tracer = new PhpEpsolarTracer($conf);
 
@@ -163,11 +165,22 @@ function pollTracer() {
 }
 
 
-function registerHATopic($sensorName, $displayUnits, $haIcon='solar-power') {
+function registerHATopic($sensorName, $displayUnits, $haIcon = 'solar-power')
+{
     global $conf, $mqtt, $connectionSettings;
 
     echo "Creating sensor: " . $sensorName . "\n";
+
     $name = $conf->get('mqttDevicename') . "_" . $sensorName;
+
+    if ($conf->get('verboseDebugging') == true) {
+        echo "publishing message " . '{
+            "name": "' . $name . '",
+            "unit_of_measurement": "' . $displayUnits . '",
+            "state_topic": "' . $conf->get('mqttTopic') . '/sensor/' . $name . '",
+            "icon": "' . 'mdi:' . $haIcon . '"
+        }' . "\n";
+    }
 
     $mqtt->connect($connectionSettings);
     $mqtt->publish(
@@ -180,13 +193,13 @@ function registerHATopic($sensorName, $displayUnits, $haIcon='solar-power') {
         }',
         0
     );
-    $mqtt->close();
 }
 
-function sendHAData($sensorName, $sensorValue) {
+function sendHAData($sensorName, $sensorValue)
+{
     global $conf, $mqtt, $connectionSettings;
 
-    if($conf->get('verboseDebugging') == true) {
+    if ($conf->get('verboseDebugging') == true) {
         echo $sensorName . ": ";
         echo $sensorValue . "\n";
     }
@@ -200,7 +213,6 @@ function sendHAData($sensorName, $sensorValue) {
             $sensorValue,
             0
         );
-        $mqtt->close();
     }
 }
 
