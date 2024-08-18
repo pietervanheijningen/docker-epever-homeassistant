@@ -27,7 +27,7 @@ require_once 'PhpSerial.php';
 class PhpSerialModbus
 {
 	// Enable for debugging
-	public $debug = true;
+	public $debug = false;
     public $serial;
 
 	public function __construct()
