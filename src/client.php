@@ -171,14 +171,15 @@ function registerHATopic($sensorName, $displayUnits, $haIcon = 'solar-power')
 
     echo "Creating sensor: " . $sensorName . "\n";
 
-    $name = $conf->get('mqttDevicename') . "_" . $sensorName;
+    $uniqueId = preg_replace('/\s+/', '_', strtolower($sensorName));
+    $name = $conf->get('mqttDevicename') . "_" . $uniqueId;
 
     $mqtt->connect($connectionSettings);
     $mqtt->publish(
-        $conf->get('mqttTopic') . '/sensor/' . $name . '/config',
+        $conf->get('mqttTopic') . '/sensor/' . $uniqueId . '/config',
         json_encode([
-            'name' => $name,
-            'unique_id' => preg_replace('/\s+/', '_', strtolower($sensorName)),
+            'name' => $sensorName,
+            'unique_id' => $uniqueId,
             'unit_of_measurement' => $displayUnits,
             'device_class' => 'energy',
             'state_topic' => $conf->get('mqttTopic') . '/sensor/' . $name,
