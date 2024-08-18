@@ -54,12 +54,13 @@ function registerTopics() {
     global $conf;
     $tracerTopics = new PhpEpsolarTracer($conf);
 
+    // ignore for now, doesnt seem to work properly
     // Tracer System Info & Firmware Versions...
-    if ($tracerTopics->getInfoData()) {
-        for ($i = 0; $i < count($tracerTopics->infoData); $i++) {
-            registerHATopic(preg_replace('/\s+/', '_', strtolower($tracerTopics->infoKey[$i])), "", "solar-power");
-        }
-    }
+//    if ($tracerTopics->getInfoData()) {
+//        for ($i = 0; $i < count($tracerTopics->infoData); $i++) {
+//            registerHATopic(preg_replace('/\s+/', '_', strtolower($tracerTopics->infoKey[$i])), "", "solar-power");
+//        }
+//    }
 
     // System Rated Data (maximum output, amps, etc)...
     if ($tracerTopics->getRatedData()) {
