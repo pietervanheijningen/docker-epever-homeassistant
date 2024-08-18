@@ -169,7 +169,7 @@ class PhpEpsolarTracer
 	// Define data units
 	public $ratedSym = Array ("V","A","W","V","A","W","","A");
 	public $realtimeSym = Array ("V","A","W","V","A","W","V","A","W","°C","°C","°C","%","°C","V","","");
-	public $statSym = Array ("V","V","V","V","KWH","KWH","KWH","KWH","KWH","KWH","KWH","KWH","T","A","°C","°C");
+	public $statSym = Array ("V","V","V","V","kWh","kWh","kWh","kWh","kWh","kWh","kWh","kWh","T","A","°C","°C");
 	public $settingSym = Array("","Ah","mV/°C/2V","V","V","V","V","V","V","V","V","V","V","V","V","","","","","","","day","°C","°C","°C","°C","°C","°C","mOhm","V"," min","V","min","","","","","","","","","","","","","","","","","","","","","","","min","min","%","%","");
 
 	// Define data dividers
