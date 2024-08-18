@@ -42,30 +42,8 @@ class PhpSerial
     {
         setlocale(LC_ALL, "en_US");
 
-        $sysName = php_uname();
-
-        if (substr($sysName, 0, 5) === "Linux") {
-            $this->_os = "linux";
-
-            //if ($this->_exec("/bin/stty") === 0) {
-            //    register_shutdown_function(array($this, "deviceClose"));
-            //} else {
-            //    trigger_error(
-            //        "No stty availible, unable to run.",
-            //        E_USER_ERROR
-            //    );
-            //}
-        } elseif (substr($sysName, 0, 6) === "Darwin") {
-            $this->_os = "osx";
-            register_shutdown_function(array($this, "deviceClose"));
-        } elseif (substr($sysName, 0, 7) === "Windows") {
-            $this->_os = "windows";
-            register_shutdown_function(array($this, "deviceClose"));
-        } else {
-            trigger_error("Host OS is neither osx, linux nor windows, unable " .
-                          "to run.", E_USER_ERROR);
-            exit();
-        }
+        // hardcode, detection was broken
+        $this->_os = "linux";
     }
 
     //
@@ -84,9 +62,11 @@ class PhpSerial
      */
     public function deviceSet($device)
     {
+        trigger_error("Specified serial port is not valid", E_USER_WARNING);
+
         var_dump($this->_os);
         var_dump($device);
-        exit(0);
+//        exit(0);
         if ($this->_dState !== SERIAL_DEVICE_OPENED) {
             if ($this->_os === "linux") {
                 if (preg_match("@^COM(\\d+):?$@i", $device, $matches)) {
