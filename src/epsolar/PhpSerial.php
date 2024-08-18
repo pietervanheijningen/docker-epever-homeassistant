@@ -84,6 +84,8 @@ class PhpSerial
      */
     public function deviceSet($device)
     {
+        var_dump($this->_os);
+        var_dump($device);
         if ($this->_dState !== SERIAL_DEVICE_OPENED) {
             if ($this->_os === "linux") {
                 if (preg_match("@^COM(\\d+):?$@i", $device, $matches)) {
