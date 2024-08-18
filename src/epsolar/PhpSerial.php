@@ -23,7 +23,7 @@ class PhpSerial
     public $_dHandle = null;
     public $_dState = SERIAL_DEVICE_NOTSET;
     public $_buffer = "";
-    public $_os = "";
+    public $_os = "linux";
 
     /**
      * This var says if buffer should be flushed by sendMessage (true) or
