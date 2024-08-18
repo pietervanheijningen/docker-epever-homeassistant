@@ -188,10 +188,12 @@ class PhpEpsolarTracer
 	public $coilData = Array ();
 	public $discreteData = Array ();
 
+    public $tracer;
+
 	// Initialize serial communication
 	public function __construct($config) {
 		$this->tracer = new PhpSerialModbus;
-		if (php_sapi_name() == "cli") file_exists($config->get('serialPort')) or die("Cannot open serial port $port\n");
+		if (php_sapi_name() == "cli") file_exists($config->get('serialPort')) or die("Cannot open serial port \n");
 
 		$this->tracer->deviceInit(
             $config->get('serialPort'),

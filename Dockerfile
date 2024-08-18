@@ -1,7 +1,5 @@
-FROM alpine:3
-
-ADD src/ /opt/epever
-#ADD config/ /opt/epever/
+FROM php:8.3-alpine
+WORKDIR /opt/epever
 
 # Enable edge repos...
 RUN sed -i '/edge/s/^#//' /etc/apk/repositories
@@ -10,14 +8,14 @@ RUN apk add --no-cache \
     make \
     g++ \
     gcc \
-    php-cli \
     bash \
     composer
 
-WORKDIR /opt/epever
+ADD src/composer.json composer.json
 
-RUN cd /opt/epever && \
-    composer install
+RUN composer install
+
+ADD src/ .
 
 HEALTHCHECK CMD pgrep php; if [ 0 != $? ]; then exit 1; fi;
 

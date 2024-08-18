@@ -9,6 +9,6 @@ export _=/usr/bin/env
 
 echo "Starting MQTT Client..."
 cd /opt/epever && \
-    php client
+    php client.php
 
 #sleep 100000

@@ -2,7 +2,7 @@
 ############################################################
 
 # Serial config for the Tracer Device...
-serialPort: /dev/ttyXRUSB0
+serialPort: /dev/ttyACM0
 baudRate: 115200
 flowControl: none
 parity: none

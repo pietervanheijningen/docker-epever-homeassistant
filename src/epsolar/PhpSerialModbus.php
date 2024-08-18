@@ -28,6 +28,7 @@ class PhpSerialModbus
 {
 	// Enable for debugging
 	public $debug = false;
+    public $serial;
 
 	public function __construct()
 	{

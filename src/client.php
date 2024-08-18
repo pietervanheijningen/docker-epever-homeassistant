@@ -17,6 +17,7 @@ require __DIR__ . '/vendor/autoload.php';
 
 use Noodlehaus\Config;
 use Noodlehaus\Parser\Yaml;
+use PhpMqtt\Client\MqttClient;
 
 require_once 'epsolar/PhpEpsolarTracer.php';
 
@@ -24,7 +25,7 @@ require_once 'epsolar/PhpEpsolarTracer.php';
 $conf = Config::load('config/config.yml');
 
 // Create new MQTT client using configuration variables
-$mqtt = new \PhpMqtt\Client\MQTTClient($conf->get('mqttServer'), $conf->get('mqttPort'));
+$mqtt = new MqttClient($conf->get('mqttServer'), $conf->get('mqttPort'));
 $loopCount = 1;
 
 echo "Epever Tracer Poller for Home Assistant.";
