@@ -17,6 +17,7 @@ require __DIR__ . '/vendor/autoload.php';
 
 use Noodlehaus\Config;
 use Noodlehaus\Parser\Yaml;
+use PhpMqtt\Client\ConnectionSettings;
 use PhpMqtt\Client\MqttClient;
 
 require_once 'epsolar/PhpEpsolarTracer.php';
@@ -26,6 +27,9 @@ $conf = Config::load('config/config.yml');
 
 // Create new MQTT client using configuration variables
 $mqtt = new MqttClient($conf->get('mqttServer'), $conf->get('mqttPort'));
+$connectionSettings = (new ConnectionSettings)
+    ->setUsername($conf->get('mqttUsername'))
+    ->setPassword($conf->get('mqttPassword'));
 $loopCount = 1;
 
 echo "Epever Tracer Poller for Home Assistant.";
@@ -159,12 +163,12 @@ function pollTracer() {
 
 
 function registerHATopic($sensorName, $displayUnits, $haIcon='solar-power') {
-    global $conf, $mqtt;
+    global $conf, $mqtt, $connectionSettings;
 
     echo "Creating sensor: " . $sensorName . "\n";
     $name = $conf->get('mqttDevicename') . "_" . $sensorName;
 
-    $mqtt->connect();
+    $mqtt->connect($connectionSettings);
     $mqtt->publish(
         $conf->get('mqttTopic') . '/sensor/' . $name . '/config',
         '{
@@ -179,7 +183,7 @@ function registerHATopic($sensorName, $displayUnits, $haIcon='solar-power') {
 }
 
 function sendHAData($sensorName, $sensorValue) {
-    global $conf, $mqtt;
+    global $conf, $mqtt, $connectionSettings;
 
     if($conf->get('verboseDebugging') == true) {
         echo $sensorName . ": ";
@@ -189,7 +193,7 @@ function sendHAData($sensorName, $sensorValue) {
     if (!empty($sensorValue)) {
         $name = $conf->get('mqttDevicename') . "_" . $sensorName;
 
-        $mqtt->connect();
+        $mqtt->connect($connectionSettings);
         $mqtt->publish(
             $conf->get('mqttTopic') . '/sensor/' . $name,
             $sensorValue,
