@@ -113,13 +113,13 @@ function pollTracer()
     global $conf;
     $tracer = new PhpEpsolarTracer($conf);
 
-    if ($tracer->getInfoData()) {
-        for ($i = 0; $i < count($tracer->infoData); $i++) {
-            sendHAData(preg_replace('/\s+/', '_', strtolower($tracer->infoKey[$i])), $tracer->infoData[$i]);
-        }
-    } else {
-        print "Cannot get Info Data\n";
-    }
+//    if ($tracer->getInfoData()) {
+//        for ($i = 0; $i < count($tracer->infoData); $i++) {
+//            sendHAData(preg_replace('/\s+/', '_', strtolower($tracer->infoKey[$i])), $tracer->infoData[$i]);
+//        }
+//    } else {
+//        print "Cannot get Info Data\n";
+//    }
 
     if ($tracer->getRatedData()) {
         for ($i = 0; $i < count($tracer->ratedData); $i++) {

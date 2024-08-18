@@ -10,15 +10,15 @@ char: 8
 stopBits: 1
 
 # Home Assistant MQTT server:
-mqttServer: 10.16.10.4
+mqttServer: 127.0.0.1
 mqttPort: 1883
 mqttTopic: homeassistant
-mqttDevicename: tracer_1
+mqttDevicename: epever
 mqttUsername:
 mqttPassword:
 
 # Core Program Config...
 
 # How often poll for data (in seconds)
-pollingInterval: 60
+pollingInterval: 5
 verboseDebugging: false # set to true to debug sensor values in log.
