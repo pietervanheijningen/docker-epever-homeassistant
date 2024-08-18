@@ -1,0 +1,22 @@
+# Configuration for EPEver Serial Device
+############################################################
+
+# Serial config for the Tracer Device...
+serialPort: /dev/ttyXRUSB0
+baudRate: 115200
+flowControl: none
+parity: none
+char: 8
+stopBits: 1
+
+# Home Assistant MQTT server:
+mqttServer: 10.16.10.4
+mqttPort: 1883
+mqttTopic: homeassistant
+mqttDevicename: tracer_1
+
+# Core Program Config...
+
+# How often poll for data (in seconds)
+pollingInterval: 60
+verboseDebugging: false # set to true to debug sensor values in log.
