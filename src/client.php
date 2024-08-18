@@ -66,42 +66,42 @@ function registerTopics()
     // System Rated Data (maximum output, amps, etc)...
     if ($tracerTopics->getRatedData()) {
         for ($i = 0; $i < count($tracerTopics->ratedData); $i++) {
-            registerHATopic(preg_replace('/\s+/', '_', strtolower($tracerTopics->ratedKey[$i])), $tracerTopics->ratedSym[$i], "solar-power");
+            registerHATopic($tracerTopics->ratedKey[$i], $tracerTopics->ratedSym[$i], "solar-power");
         }
     }
 
     // RealTime Data
     if ($tracerTopics->getRealtimeData()) {
         for ($i = 0; $i < count($tracerTopics->realtimeData); $i++) {
-            registerHATopic(preg_replace('/\s+/', '_', strtolower($tracerTopics->realtimeKey[$i])), $tracerTopics->realtimeSym[$i], "solar-power");
+            registerHATopic($tracerTopics->realtimeKey[$i], $tracerTopics->realtimeSym[$i], "solar-power");
         }
     }
 
     // Statistical Data
     if ($tracerTopics->getStatData()) {
         for ($i = 0; $i < count($tracerTopics->statData); $i++) {
-            registerHATopic(preg_replace('/\s+/', '_', strtolower($tracerTopics->statKey[$i])), $tracerTopics->statSym[$i], "solar-power");
+            registerHATopic($tracerTopics->statKey[$i], $tracerTopics->statSym[$i], "solar-power");
         }
     }
 
     // Settings Data
     if ($tracerTopics->getSettingData()) {
         for ($i = 0; $i < count($tracerTopics->settingData); $i++) {
-            registerHATopic(preg_replace('/\s+/', '_', strtolower($tracerTopics->settingKey[$i])), $tracerTopics->settingSym[$i], "solar-power");
+            registerHATopic($tracerTopics->settingKey[$i], $tracerTopics->settingSym[$i], "solar-power");
         }
     }
 
     // Coils Data
     if ($tracerTopics->getCoilData()) {
         for ($i = 0; $i < count($tracerTopics->coilData); $i++) {
-            registerHATopic(preg_replace('/\s+/', '_', strtolower($tracerTopics->coilKey[$i])), "", "solar-power");
+            registerHATopic($tracerTopics->coilKey[$i], "", "solar-power");
         }
     }
 
     // Discrete Data
     if ($tracerTopics->getDiscreteData()) {
         for ($i = 0; $i < count($tracerTopics->discreteData); $i++) {
-            registerHATopic(preg_replace('/\s+/', '_', strtolower($tracerTopics->discreteKey[$i])), "", "solar-power");
+            registerHATopic($tracerTopics->discreteKey[$i], "", "solar-power");
         }
     }
 
@@ -173,24 +173,18 @@ function registerHATopic($sensorName, $displayUnits, $haIcon = 'solar-power')
 
     $name = $conf->get('mqttDevicename') . "_" . $sensorName;
 
-    if ($conf->get('verboseDebugging') == true) {
-        echo "publishing message " . '{
-            "name": "' . $name . '",
-            "unit_of_measurement": "' . $displayUnits . '",
-            "state_topic": "' . $conf->get('mqttTopic') . '/sensor/' . $name . '",
-            "icon": "' . 'mdi:' . $haIcon . '"
-        }' . "\n";
-    }
-
     $mqtt->connect($connectionSettings);
     $mqtt->publish(
         $conf->get('mqttTopic') . '/sensor/' . $name . '/config',
-        '{
-            "name": "' . $name . '",
-            "unit_of_measurement": "' . $displayUnits . '",
-            "state_topic": "' . $conf->get('mqttTopic') . '/sensor/' . $name . '",
-            "icon": "' . 'mdi:' . $haIcon . '"
-        }',
+        json_encode([
+            'name' => $name,
+            'unique_id' => preg_replace('/\s+/', '_', strtolower($sensorName)),
+            'unit_of_measurement' => $displayUnits,
+            'device_class' => 'energy',
+            'state_topic' => $conf->get('mqttTopic') . '/sensor/' . $name,
+            'icon' => 'mdi:' . $haIcon,
+            'state_class' => str_contains($sensorName, 'Total ') ? 'total_increasing' : null,
+        ]),
         0
     );
 }
