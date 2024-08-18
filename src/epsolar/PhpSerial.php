@@ -62,11 +62,6 @@ class PhpSerial
      */
     public function deviceSet($device)
     {
-        trigger_error("Specified serial port is not valid", E_USER_WARNING);
-
-        var_dump($this->_os);
-        var_dump($device);
-//        exit(0);
         if ($this->_dState !== SERIAL_DEVICE_OPENED) {
             if ($this->_os === "linux") {
                 if (preg_match("@^COM(\\d+):?$@i", $device, $matches)) {

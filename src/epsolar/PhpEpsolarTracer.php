@@ -266,6 +266,7 @@ class PhpEpsolarTracer
 	public function getInfoData() {
 		$this->tracer->sendRawQuery("\x01\x2b\x0e\x01\x00\x70\x77",false);
 		$result=$this->tracer->getResponse(true);
+        var_dump($result);
 		if ( (!$result) && (php_sapi_name() == "cli") ) die("Timeout on reading from serial port\n");
 		// $escaped = addcslashes($result, "\0..\37!@\177..\377");
 		// print $escaped."\n";
