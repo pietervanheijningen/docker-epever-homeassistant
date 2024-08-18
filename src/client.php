@@ -171,7 +171,7 @@ function registerHATopic($sensorName, $displayUnits, $haIcon = 'solar-power')
 
     echo "Creating sensor: " . $sensorName . "\n";
 
-    $uniqueId = preg_replace('/\s+/', '_', strtolower($sensorName));
+    $uniqueId = $conf->get('mqttDevicename') . "_" . preg_replace('/\s+/', '_', strtolower($sensorName));
 
     $mqtt->connect($connectionSettings);
     $mqtt->publish(
@@ -181,7 +181,7 @@ function registerHATopic($sensorName, $displayUnits, $haIcon = 'solar-power')
             'unique_id' => $uniqueId,
             'unit_of_measurement' => $displayUnits,
             'device_class' => 'energy',
-            'state_topic' => $conf->get('mqttTopic') . '/sensor/' . $conf->get('mqttDevicename') . "_" . $uniqueId,
+            'state_topic' => $conf->get('mqttTopic') . '/sensor/' .  $uniqueId,
             'icon' => 'mdi:' . $haIcon,
             'state_class' => str_contains($sensorName, 'Total ') ? 'total_increasing' : null,
         ]),
