@@ -1,0 +1,27 @@
+name: "Epever2MQTT"
+description: "Connects epever to MQTT"
+version: "1.0.0"
+slug: "Connects epever to MQTT"
+init: false
+arch:
+  - aarch64
+  - amd64
+  - armhf
+  - armv7
+  - i386
+options:
+  serialPort: /dev/ttyACM0
+  baudRate: 115200
+  flowControl: none
+  parity: none
+  char: 8
+  stopBits: 1
+
+  mqttServer: 127.0.0.1
+  mqttPort: 1883
+  mqttTopic: homeassistant
+  mqttDevicename: epever
+  mqttUsername: Mqtt
+  mqttPassword:
+  pollingInterval: 5
+  verboseDebugging: false
