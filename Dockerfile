@@ -1,5 +1,5 @@
-FROM php:8.3-alpine
-WORKDIR /opt/epever
+ARG BUILD_FROM
+FROM $BUILD_FROM
 
 # Enable edge repos...
 RUN sed -i '/edge/s/^#//' /etc/apk/repositories
@@ -9,6 +9,7 @@ RUN apk add --no-cache \
     g++ \
     gcc \
     bash \
+    php \
     composer
 
 ADD src/composer.json composer.json
