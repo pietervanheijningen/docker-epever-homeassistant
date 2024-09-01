@@ -1,6 +1,7 @@
 ARG BUILD_FROM
 FROM $BUILD_FROM
 
+WORKDIR /opt/epever
 # Enable edge repos...
 RUN sed -i '/edge/s/^#//' /etc/apk/repositories
 
