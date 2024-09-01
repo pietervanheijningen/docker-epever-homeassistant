@@ -1,7 +1,7 @@
 name: "Epever2MQTT"
 description: "Connects epever to MQTT"
 version: "1.0.0"
-slug: "Connects epever to MQTT"
+slug: "epever2mqtt"
 init: false
 arch:
   - aarch64
