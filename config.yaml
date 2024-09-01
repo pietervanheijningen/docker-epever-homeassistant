@@ -9,6 +9,8 @@ arch:
   - armhf
   - armv7
   - i386
+devices:
+  - /dev/ttyACM0
 options:
   serialPort: /dev/ttyACM0
   baudRate: 115200
