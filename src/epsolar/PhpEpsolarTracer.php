@@ -193,15 +193,15 @@ class PhpEpsolarTracer
 	// Initialize serial communication
 	public function __construct($config) {
 		$this->tracer = new PhpSerialModbus;
-		if (php_sapi_name() == "cli") file_exists($config->get('serialPort')) or die("Cannot open serial port \n");
+		if (php_sapi_name() == "cli") file_exists($config->serialPort) or die("Cannot open serial port \n");
 
 		$this->tracer->deviceInit(
-            $config->get('serialPort'),
-            $config->get('baudRate'),
-            $config->get('parity'),
-            $config->get('char'),
-            $config->get('stopBits'),
-            $config->get('flowControl'));
+            $config->serialPort,
+            $config->baudRate,
+            $config->parity,
+            $config->char,
+            $config->stopBits,
+            $config->flowControl);
 
 		$this->tracer->deviceOpen();
 		// $this->tracer->debug=true;
