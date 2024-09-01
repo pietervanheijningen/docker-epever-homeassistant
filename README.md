@@ -1,11 +1,14 @@
-# Changes from original:
+## Install with:
+https://github.com/pietervanheijningen/home-assistant-addons
+
+## Changes from original
 - Update to php8
 - Add username&pass to MQTT connection
 - Better units of measurement for better HA integration
 - Different /dev/tty* 
 - Removed InfoData feature that didn't work
 
-# This works for me with:
+## This works for me with
 - Raspberry Pi 4 4GB
 - CC-USB-RS485-150U cable (no new drivers)
   - it shows up as /dev/ttyACM0
