@@ -15,21 +15,19 @@
 // Include composer libraries autoloaded...
 require __DIR__ . '/vendor/autoload.php';
 
-use Noodlehaus\Config;
-use Noodlehaus\Parser\Yaml;
 use PhpMqtt\Client\ConnectionSettings;
 use PhpMqtt\Client\MqttClient;
 
 require_once 'epsolar/PhpEpsolarTracer.php';
 
 // Load configuration
-$conf = Config::load('config/config.yml');
+$conf = json_decode(file_get_contents('/data/options.json'));
 
 // Create new MQTT client using configuration variables
-$mqtt = new MqttClient($conf->get('mqttServer'), $conf->get('mqttPort'));
+$mqtt = new MqttClient($conf->mqttServer, $conf->mqttPort);
 $connectionSettings = (new ConnectionSettings)
-    ->setUsername($conf->get('mqttUsername'))
-    ->setPassword($conf->get('mqttPassword'));
+    ->setUsername($conf->mqttUsername)
+    ->setPassword($conf->mqttPassword);
 $loopCount = 1;
 
 echo "Epever Tracer Poller for Home Assistant.";
@@ -46,7 +44,7 @@ while (true) {
     // Reset loop counter every 10 times, so we can re-create the HA topics (if HA restarted etc)...
     if ($loopCount >= 10) $loopCount = 1;
 
-    sleep($conf->get('pollingInterval')); // Polling interval defined in config.
+    sleep($conf->pollingInterval); // Polling interval defined in config.
 }
 
 
@@ -171,17 +169,17 @@ function registerHATopic($sensorName, $displayUnits, $haIcon = 'solar-power')
 
     echo "Creating sensor: " . $sensorName . "\n";
 
-    $uniqueId = $conf->get('mqttDevicename') . "_" . preg_replace('/\s+/', '_', strtolower($sensorName));
+    $uniqueId = $conf->mqttDevicename . "_" . preg_replace('/\s+/', '_', strtolower($sensorName));
 
     $mqtt->connect($connectionSettings);
     $mqtt->publish(
-        $conf->get('mqttTopic') . '/sensor/' . $uniqueId . '/config',
+        $conf->mqttTopic . '/sensor/' . $uniqueId . '/config',
         json_encode([
             'name' => $sensorName,
             'unique_id' => $uniqueId,
             'unit_of_measurement' => $displayUnits,
             'device_class' => 'energy',
-            'state_topic' => $conf->get('mqttTopic') . '/sensor/' .  $uniqueId,
+            'state_topic' => $conf->mqttTopic . '/sensor/' .  $uniqueId,
             'icon' => 'mdi:' . $haIcon,
             'state_class' => str_contains($sensorName, 'Total ') ? 'total_increasing' : null,
         ]),
@@ -193,17 +191,17 @@ function sendHAData($sensorName, $sensorValue)
 {
     global $conf, $mqtt, $connectionSettings;
 
-    if ($conf->get('verboseDebugging') == true) {
+    if ($conf->verboseDebugging == true) {
         echo $sensorName . ": ";
         echo $sensorValue . "\n";
     }
 
     if (!empty($sensorValue)) {
-        $name = $conf->get('mqttDevicename') . "_" . $sensorName;
+        $name = $conf->mqttDevicename . "_" . $sensorName;
 
         $mqtt->connect($connectionSettings);
         $mqtt->publish(
-            $conf->get('mqttTopic') . '/sensor/' . $name,
+            $conf->mqttTopic . '/sensor/' . $name,
             $sensorValue,
             0
         );
