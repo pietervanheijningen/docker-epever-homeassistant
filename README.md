@@ -1,3 +1,19 @@
+# Changes from original:
+- Update to php8
+- Add username&pass to MQTT connection
+- Better units of measurement for better HA integration
+- Different /dev/tty* 
+- Removed InfoData feature that didn't work
+
+# This works for me with:
+- Raspberry Pi 4 4GB
+- CC-USB-RS485-150U cable (no new drivers)
+  - it shows up as /dev/ttyACM0
+  - also extended with extra ethernet cable
+
+
+----------
+original readme:
 # A Docker based Home Assistant interface for the EPEver MPPT Charge controllers to interface from Modbus to MQTT
 
 **Docker Hub:** [`bushrangers/ha-epever-mqtt:latest`](https://hub.docker.com/r/bushrangers/ha-epever-mqtt/)
